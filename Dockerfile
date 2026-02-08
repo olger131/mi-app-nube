@@ -12,5 +12,5 @@ COPY . /var/www/html/
 # 4. Asegurar permisos
 RUN chown -R www-data:www-data /var/www/html
 
-# 5. Configurar el puerto y arrancar Apache al mismo tiempo
-CMD sed -i 's/80/'"$PORT"'/g' /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf && apache2-foreground
+# 5. Forzar a Apache a usar el puerto que Railway le asigne al arrancar
+CMD bash -c "sed -i 's/80/${PORT}/g' /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf && apache2-foreground"
