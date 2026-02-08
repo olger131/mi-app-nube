@@ -1,17 +1,16 @@
 FROM php:8.1-apache
 
-# Instalar extensiones necesarias para MySQL
+# 1. Instalar extensiones de MySQL
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Habilitar el módulo de reescritura
+# 2. Habilitar modo de reescritura
 RUN a2enmod rewrite
 
-# Copiar tus archivos al servidor
+# 3. Configurar Apache para usar la variable de puerto de Railway
+RUN sed -i 's/80/${PORT}/g' /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
+
+# 4. Copiar tus archivos
 COPY . /var/www/html/
 
-# Configurar el puerto que Railway espera
-sed -i 's/Listen 80/Listen ${PORT}/g' /etc/apache2/ports.conf
-sed -i 's/:80/:${PORT}/g' /etc/apache2/sites-available/000-default.conf
-
-# Permisos para que PHP pueda escribir si es necesario
+# 5. Permisos
 RUN chown -R www-data:www-data /var/www/html
