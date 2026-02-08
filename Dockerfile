@@ -7,3 +7,7 @@ RUN a2enmod rewrite
 COPY . /var/www/html/
 # Dar permisos
 RUN chown -R www-data:www-data /var/www/html
+
+# ESTA LÍNEA ES LA QUE ACTIVA EL LINK PÚBLICO:
+RUN sed -i 's/80/${PORT}/g' /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
+
