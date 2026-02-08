@@ -1,9 +1,9 @@
 FROM php:8.1-apache
+# Instalar extensiones para que PHP hable con MySQL
 RUN docker-php-ext-install mysqli pdo pdo_mysql
+# Habilitar rutas amigables
 RUN a2enmod rewrite
-
-# Esta línea es el secreto para que Railway no falle:
-RUN sed -i 's/80/${PORT}/g' /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
-
+# Copiar tu código
 COPY . /var/www/html/
+# Dar permisos
 RUN chown -R www-data:www-data /var/www/html
